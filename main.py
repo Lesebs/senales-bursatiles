@@ -1,7 +1,12 @@
 import yfinance as yf
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 
 app = FastAPI(title="Señales bursátiles")
+
+@app.get("/")
+def home():
+    return FileResponse("index.html")
 
 @app.get("/signal/{ticker}")
 def get_signal(ticker: str):

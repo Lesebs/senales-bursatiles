@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Señales bursátiles</title>
+  <style>
+    body { font-family: sans-serif; max-width: 480px; margin: 40px auto; padding: 0 16px; }
+    input, button { padding: 10px; font-size: 16px; }
+    #resultado { margin-top: 20px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <h1>Señales bursátiles</h1>
+
+  <form id="formulario">
+    <input id="ticker" value="AAPL" required>
+    <button>Consultar</button>
+  </form>
+
+  <div id="resultado"></div>
+  <p><small>Proyecto educativo. No es una recomendación de inversión.</small></p>
+
+  <script>
+    const formulario = document.getElementById("formulario");
+    const resultado = document.getElementById("resultado");
+
+    formulario.addEventListener("submit", async (evento) => {
+      evento.preventDefault();
+      resultado.textContent = "Consultando...";
+
+      const ticker = document.getElementById("ticker").value.trim();
+
+      try {
+        const respuesta = await fetch(`/signal/${encodeURIComponent(ticker)}`);
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+          throw new Error(datos.detail);
+        }
+
+        resultado.innerText =
+          `${datos.ticker}\n` +
+          `Precio: ${datos.precio}\n` +
+          `SMA 20: ${datos.sma20}\n` +
+          `SMA 50: ${datos.sma50}\n` +
+          `Tendencia: ${datos.tendencia}`;
+      } catch (error) {
+        resultado.textContent = `Error: ${error.message}`;
+      }
+    });
+  </script>
+</body>
+</html>
