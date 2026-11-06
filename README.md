@@ -8,7 +8,11 @@ Aplicación web que consulta precios históricos de acciones, calcula medias mó
 
 > Proyecto educativo. No es una recomendación de inversión.
 
+## Demo
 
+http://18.118.241.234
+
+Desplegado en AWS EC2 con Docker Compose. La demo puede estar apagada para ahorrar costos.
 
 \## Arquitectura
 
