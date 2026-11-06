@@ -1,8 +1,8 @@
 import os
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 from dotenv import load_dotenv
-from sqlalchemy import DateTime, String, create_engine
+from sqlalchemy import Date, DateTime, String, UniqueConstraint, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
 load_dotenv()
@@ -17,9 +17,13 @@ class Base(DeclarativeBase):
 
 class Signal(Base):
     __tablename__ = "signals"
+    __table_args__ = (
+        UniqueConstraint("ticker", "fecha", name="uq_signal_ticker_fecha"),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     ticker: Mapped[str] = mapped_column(String(20), index=True)
+    fecha: Mapped[date] = mapped_column(Date)
     precio: Mapped[float]
     sma20: Mapped[float]
     sma50: Mapped[float]
